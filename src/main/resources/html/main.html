@@ -1,1037 +1,548 @@
 <!doctype html>
 <html>
-<head>
-<style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
+  <head>
+    <style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>
 		<meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Mahjong</title>
-		<link rel="stylesheet" href="../jscss/jquery-ui-1.11.4/jquery-ui.min.css">
-    <link rel="stylesheet" href="../jscss/bootstrap355/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../jscss/bootstrap355/css/bootstrap-theme.min.css">
-		<script src="../jscss/jquery-2.1.4.min.js">
-</script>
- 		<script src="../jscss/jquery-ui-1.11.4/jquery-ui.min.js">
-</script>
-    <script src="../jscss/d3.min.js">
-</script>
-    <script src="../jscss/angular.min.js">
-</script>
-    <script src="../jscss/bootstrap355/js/bootstrap.min.js">
-</script>
+		<link rel="stylesheet" href="./jscss/jquery-ui-1.11.4/jquery-ui.min.css">
+		<script src="./jscss/jquery-2.1.4.min.js"></script>
+ 		<script src="./jscss/jquery-ui-1.11.4/jquery-ui.min.js"></script>
+    <script src="./jscss/app.module.js"></script>
+    <link rel="stylesheet" href="./jscss/app.module.css">
 		<style type="text/css">
-			/* For this app */
-      body > #HtmlDeveloping > #HDpage_Root {
-        background-color:#FFFACD;
-      }
-      /* explorer space on off */
-      #HDexplorerSpace.HDScreenSaved > :not(.HDScreenSaved){
-        display:none;
-      }
-      #HDexplorerSpace.HDpageContainer > :not(.HDpageContainer){
-        display:none;
-      }
-			.HDpageClass {
-        background-color:transparent;
-        opacity: 1 !important;
-			}
-			.HDpageClass table td,.HDpageClass table th{/* table の罫線を出すために必須の設定 */
-				background-color:transparent;
-			}
-      .HDbasePage {
-        background-color: transparent;
-      }
-			.snap_border {
-        opacity: 0.5;
-        background-color:rgba(0, 0, 0, 0.5);
-			}
-			.snap_border ~ *, * ~ .snap_border {
-        background-color:rgba(0, 0, 0, 0.5);
-				opacity : 0.5;
-			}
-			.ui-resizable-e,.ui-resizable-s,.ui-resizable-se{
-				opacity: 0.2;
-			}
-			#header_menu_bar , #sub_header_menu_bar{
-				padding-left:60px;
-			}
-			.menu_button{
-				margin:6px;
-			}
-			.hide_mode_target {
-				width: 100%;
-			}
-			.menu_bar {
-				background-color: rgba(221, 221, 221, 0.5);
-				padding: 5px;
-				height: 40px;
-			}
-			.snippets{
-				padding-left:20px;
-			}
-			.side_menu_bar>input {
-				margin: 4px;
-			}
-      #basic_menu input[type=number]{
-        text-align:center;
-        height:20px !important;
-      }
-			.objCut {
-				border-color:blue !important;
-        border-style:dotted !important;
-				opacity: 0.8;
-			}
-			.objCut *{
-				background-color: #aaccff !important;
-				opacity: 0.8;
-			}
-			.objCopy {
-				border-color:green !important;
-        border-style:dotted !important;
-				opacity: 0.8;
-			}
-			.objCopy *{
-				background-color: #aaffcc !important;
-				opacity: 0.8;
-			}
-			:hover.objPositioning{
-				border-color:#ff99aa !important;
-        border-style:dotted  !important;
-			}
-			:hover.objPositioning *{
-				background-color: #ffccdd !important;
-				opacity: 0.8;
-			}
-      .explorerSelected {
-        background-color:rgba(255, 0, 0, 0.2);
-      }
-			.objSelected:not(.grid), objSelected.objDraggableResizable:not(.grid) {
-        box-shadow:0px 0px 8px red;
-        background-color:rgba(255, 255, 255, 0.4);
-			}
-			.objSelected.grid, objSelected.objDraggableResizable.grid {
-				opacity: 0.8;
-			}
-			.objSelected * , objSelected.objDraggableResizable *  {
-				opacity: 0.8;
-			}
-      .displayNone {
-        display:none;
-      }
-      .menuHandler{
-        background-color:#cccccc;
-      }
-      .gradSelected{
-        border-left:16px solid grey !important;
-      }
-      .openCloseTrigger{
-        overflow: hidden;
-        white-space: nowrap;
-      }
-      .openCloseTrigger.hiddenState{
-        text-overflow: ellipsis;
-      }
-      .menu_container {
-        width:460px;
-      }
-      .menu_container > div {
 
-      }
-      #HDpageSpace input.func_page_change {
-        border:2px double transparent;
-        text-align:center;
-        margin-bottom: 2px;
-        margin-left:8px;
-        width:92%;
-      }
-      #HDpageRoot > input.func_page_change.HDbasePage{
-        background-color:#000fff;
-        color:white;
-      }
-      #HDbasePageList > input.func_page_change.HDbasePage{
-        background-color:#000fff;
-        color:white;
-      }
-      #HDpageSpace input.func_page_change.selectedScrnBtn{
-        border:2px double grey;
-        background-color:#FF6E41;
-        color:black;
-      }
-      #HDfilterPageList > input.func_page_change.freeScrnBtn{
-        border:2px double grey;
-        text-align:left;
-        margin-left:16px;
-      }
-      .borderRadius{
-        width:3em;height:1em;position:absolute;
-      }
-      #boxModel input[type=number] {
-        width:3.5em;
-      }
-      .wrapper{
-        padding-right:2em !important;
-      }
-      #basic_menu input[type=text]{
-        padding:0px 5px 0px;
-      }
-
-			/* As you like */
-      html {
-        height:100%;
-        width:100%;
-      }
-			body {
-        height:100%;
-        width:100%;
-				margin: 0px;
-			}
-      body *{
-        font-family: Ricty Diminished, Ricty, 'A-TTC 新ゴ R', 'ヒラギノ角ゴ Pro W3','Hiragino Kaku Gothic Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif,'ＭＳ ゴシック', monospace;
-      }
-			p,dl {
-				padding: 5px;
-			}
-			th {
-				white-space: nowrap;
-				word-break: keep-all;
-			}
-			input {
-				border-radius: 5px;
-			}
-			input[type=text] {
-				padding: 5px;
-			}
-			label {
-				padding-left: 5px;
-				padding-right: 5px;
-				white-space: nowrap;
-			}
-			#style_list{
-        display:block;
-			}
-      .borderRadius{
-        background-color:rgba(255, 0, 0, 0.1);
-      }
-      .border{
-        background-color:rgba(0, 255, 0, 0.1);
-      }
-      .margin{
-        background-color:rgba(0, 0, 255, 0.2);
-      }
-      .padding{
-        background-color:rgba(255, 255, 0, 0.2);
-      }
-      .noBgColor{
-        background-color:rgba(255, 255, 255, 1);
-      }
-      .HDpageSpace >input {
-        border:none;
-        background-color:transparent;
-        text-align:left;
-      }
-		</style>
-		<style id="MyEditableStyle" type="text/css">
-			* {
-				font-family: Ricty Diminished, Ricty, 'A-TTC 新ゴ R', 'ヒラギノ角ゴ Pro W3',
-				'Hiragino Kaku Gothic Pro W3', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', sans-serif,'ＭＳ ゴシック', monospace;
-			}
-			#screenRoot *:not(input){
-
-			}
-			.HDpageClass{
-				background-color:transparent;
-			}
-			#context_menu{
-				background-color:white !important;;
-			}
-			h1,h2,h3,h4 {
-				text-align: center;
-			}
-			h1 {
-				font-size: 4em;
-			}
-			h2 {
-				font-size: 3em;
-			}
-			h3 {
-				font-size: 2em;
-			}
-			.shadow {
-				padding: 6px;
-				box-shadow: 5px 5px 15px #000000;
-				border-radius: 5px;
-			}
-			.hukidasi{
-				width: 300px;
-				margin: 0 auto;
-				padding: 8px 0;
-				border: 1px solid #cccccc;
-				border-radius: 12px;
-				text-align: center;
-				position: relative;
-			}
-			.hukidasi:before{
-				content: "";
-				border: 12px solid transparent;
-				border-top: 12px solid #ffffff;
-				position: absolute;
-				right: 30%;
-				bottom: -23px;
-			}
-			.hukidasi:after{
-				content: "";
-				border: 12px solid transparent;
-				border-top: 12px solid #cccccc;
-				position: absolute;
-				right: 30%;
-				bottom: -24px;
-			}
-			.grid{
-				position:relative !important;
-				float:left;
-				margin-right:10px;
-				margin-bottom:10px;
-				top:0px !important;
-				left:0px !important;
-			}
-      .flexGrid {
-        display:flex;
-        flex-wrap:wrap;
-        align-content:flex-start;
-      }
-      .flexGrid > .htmlize{
-				position:relative !important;
-        top:0px !important;
-				left:0px !important;
-      }
-			.HDpageClass > .htmlize{
-				animation: anime1 3s ease -1s 1 normal;
-			}
-
-			@keyframes anime1 {
-				0% {background-color: red;}
-				100% {background-color: transparent;}
-			}
-		</style>
+    </style>
 	</head>
-<body data-ng-app="app">
-<section id="" class="" style="z-index: 110; height: 1200px; width: 1601px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; background-color: rgb(60, 175, 60);">
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 567px; left: 232px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 1068px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 316px; left: 234px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 1068px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 801px; left: 232px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 1068px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 1050px; left: 232px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 1068px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="wanPaiList" class="wanPaiList" style="z-index: 110; height: 117px; width: 633px; top: 27px; left: 479px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 198px; left: 234px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 449px; left: 232px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 685px; left: 232px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<div id="myPaiList" class="holdingPaiList" style="z-index: 110; height: 118px; width: 1177px; top: 932px; left: 232px; position: absolute; right: auto; bottom: auto; display: flex; flex-flow: column nowrap;">
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 0px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 80px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 161px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: -1px; position: absolute; right: auto; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 241px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 322px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 403px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 482px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 563px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 644px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 725px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 806px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 887px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-<div id="" class="" style="z-index: 110; height: 109px; width: 91px; top: 0px; left: 968px; position: absolute; right: auto; bottom: auto; display: block;">
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 0px; left: 10px; position: absolute; right: -1px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); padding-top: 0px; border-width: 4px 4px 0px 0px; border-style: solid; border-color: rgb(255, 135, 25); -moz-border-top-colors: none; -moz-border-right-colors: none; -moz-border-bottom-colors: none; -moz-border-left-colors: none; border-image: none; display: block;">
-</section>
-<section id="" class="" style="z-index: 110; height: 100px; width: 81px; top: 9px; left: 0px; position: absolute; right: 9px; bottom: auto; border-radius: 5px; background-color: rgb(255, 255, 255); border-color: rgb(200, 200, 200); border-top: 2px solid rgb(200, 200, 200); border-style: solid; display: block;">
-</section>
-</div>
-</div>
-<section id="" class="charactor" style="z-index:110;height:230px;width:190px;top:938px;left:24px;position:absolute;right:auto;bottom:auto;border-radius:5px;background-color:rgba(0, 0, 0, 0.2);font-size:42px;color:rgba(255,255,255,1);">北</section>
-<section id="" class="charactor" style="z-index:110;height:230px;width:190px;top:687px;left:24px;position:absolute;right:auto;bottom:auto;border-radius:5px;background-color:rgba(0, 0, 0, 0.2);font-size:42px;color:rgba(255,255,255,1);">西</section>
-<section id="" class="charactor" style="z-index:110;height:230px;width:190px;top:440px;left:24px;position:absolute;right:auto;bottom:auto;border-radius:5px;background-color:rgba(0, 0, 0, 0.2);font-size:42px;color:rgba(255,255,255,1);">南</section>
-<section id="" class="charactor" style="z-index:110;height:230px;width:190px;top:181px;left:24px;position:absolute;right:auto;bottom:auto;border-radius:5px;background-color:rgba(0, 0, 0, 0.2);font-size:42px;color:rgba(255,255,255,1);">自キャラ<br>東</section>
-</section>
-<div id="MyEditableScript" class="htmlize">
-<script>
-</script>
-</div>
-</body>
+  <body data-ng-app="app">
+    <section id="takuArea" class="" >
+      <div id="wanPaiListArea0" class="wanPaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="wanPaiListArea1" class="wanPaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="holdingPaiListArea0" class="holdingPaiListArea0 holdingPaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+      </div>
+      <div id="sutePaiListArea0" class="sutePaiListArea0 sutePaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="holdingPaiListArea1" class="holdingPaiListArea1 dingPaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="sutePaiListArea1" class="sutePaiListArea1 sutePaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+      </div>
+      <div id="holdingPaiListArea2" class="holdingPaiListArea2 dingPaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="sutePaiListArea2" class="sutePaiListArea2 sutePaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="holdingPaiListArea3" class="holdingPaiListArea3 dingPaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <div id="sutePaiListArea3" class="sutePaiListArea3 sutePaiListArea paiList" >
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" >
+          </section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+        <div id="" class="paiObject" >
+          <section id="" class="paiBack" ></section>
+          <section id="" class="paiFront" ></section>
+        </div>
+      </div>
+      <section id="" class="charactorArea" >自キャラ<br>東</section>
+      <section id="" class="charactorArea" >南</section>
+      <section id="" class="charactorArea" >西</section>
+      <section id="" class="charactorArea" >北</section>
+
+    </section>
+    <div id="MyEditableScript" class="htmlize">
+      <script>
+      </script>
+    </div>
+  </body>
 </html>
