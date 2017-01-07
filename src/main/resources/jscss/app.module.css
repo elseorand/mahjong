@@ -1,0 +1,161 @@
+#takuArea {
+    z-index: 110;
+    height: 1200px;
+    width: 1601px;
+    top: 0px;
+    left: 0px;
+    position: absolute;
+    background-color: rgb(60, 175, 60);
+}
+#wanPaiListArea0 {
+    z-index: 110;
+    height: 117px;
+    width: 633px;
+    top: 10px;
+    left: 479px;
+    position: absolute;
+    right: auto;
+    bottom: auto;
+    display: flex;
+    flex-flow: row nowrap;
+}
+#wanPaiListArea1 {
+    z-index: 110;
+    height: 117px;
+    width: 633px;
+    top: 54px;
+    left: 459px;
+    position: absolute;
+    right: auto;
+    bottom: auto;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.paiList {
+    z-index: 110;
+    height: 118px;
+    width: 1177px;
+    position: absolute;
+    right: auto;
+    bottom : auto;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.holdingPaiListArea {
+}
+.sutePaiListArea {
+}
+.paiObject {
+    top: 0px;
+    z-index: 110;
+    height: 109px;
+    width: 73px;
+    position: relative;
+    display: block;
+}
+.sutePaiListArea > .paiObject {
+    height: 76.3px;
+    width: 51.1px;
+}
+.sutePaiListArea > .paiObject > .paiFront,
+.sutePaiListArea > .paiObject > .paiBack {
+    height: 56px;
+    width: 46.5px;
+}
+
+.paiFront {
+    z-index: 110;
+    height: 80px;
+    width: 64px;
+    top: 7px;
+    left: -1px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    border-color: rgb(200, 200, 200);
+    border-top: 2px solid rgb(200, 200, 200);
+    border-style: solid;
+    display: block;
+}
+.paiBack {
+    z-index: 110;
+    height: 80px;
+    width: 64px;
+    top: 0px;
+    left: 8px;
+    position: absolute;
+    right: -1px;
+    bottom: auto;
+    border-radius: 5px;
+    background-color: rgb(255, 255, 255);
+    padding-top: 0px;
+    border-width: 4px 4px 0px 0px;
+    border-style: solid;
+    border-color: rgb(255, 135, 25);
+    -moz-border-top-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    border-image: none;
+    display: block;
+}
+.charactorArea {
+    z-index:110;
+    height:230px;
+    width:190px;
+    left:24px;
+    position:absolute;
+    right:auto;
+    bottom:auto;
+    border-radius:5px;
+    background-color:rgba(0, 0, 0, 0.2);
+    font-size:42px;
+    color:rgba(255,255,255,1);
+}
+
+
+.holdingPaiListArea0 {
+    top: 198px;
+    left: 232px;
+}
+.sutePaiListArea0 {
+    top: 316px;
+    left: 232px;
+}
+.holdingPaiListArea1 {
+    top: 449px;
+    left: 232px;
+}
+.sutePaiListArea1 {
+    top: 567px;
+    left: 232px;
+}
+.holdingPaiListArea2 {
+    top: 700px;
+    left: 232px;
+}
+.sutePaiListArea2 {
+    top: 818px;
+    left: 232px;
+}
+.holdingPaiListArea3 {
+    top: 951px;
+    left: 232px;
+}
+.sutePaiListArea3 {
+    top: 1069px;
+    left: 232px;
+}
+
+.charactorArea:nth-of-type(1){
+    top:181px;
+}
+.charactorArea:nth-of-type(2){
+    top:440px;
+}
+.charactorArea:nth-of-type(3){
+    top:687px;
+}
+.charactorArea:nth-of-type(4){
+    top:938px;
+}
