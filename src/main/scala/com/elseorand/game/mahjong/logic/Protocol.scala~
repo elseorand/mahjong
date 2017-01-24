@@ -1,0 +1,29 @@
+package com.elseorand.game.mahjong.logic
+
+import spray.json._
+
+object Protocol {
+  sealed trait GameMessage
+  case class DefaultType(val $type: String) extends GameMessage
+  case class ChatMessage(senderId: String, message: String) extends GameMessage
+  case class Subscribe(member: String, allMembers: Seq[String]) extends GameMessage
+  case class UnSubscribe(member: String) extends GameMessage
+  case class Sutehai(paiId: String, done: Boolean) extends GameMessage
+  case class RequestTsumohai(senderId: String, number: Int) extends GameMessage
+  case class ResponseTsumohai(senderId: String, paiList: Seq[MahjongPai]) extends GameMessage
+
+  object DefaultTypeProtocol extends DefaultJsonProtocol {
+    implicit val format = jsonFormat1(DefaultType.apply)
+  }
+
+  object RequestTsumohaiProtocol extends DefaultJsonProtocol {
+    implicit val format = jsonFormat2(RequestTsumohai.apply)
+  }
+
+  object ResponseTsumohaiProtocol extends DefaultJsonProtocol {
+    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val mahjongPaiFormat = jsonFormat9(MahjongPai.apply)
+    implicit val format = jsonFormat2(ResponseTsumohai.apply)
+  }
+
+}

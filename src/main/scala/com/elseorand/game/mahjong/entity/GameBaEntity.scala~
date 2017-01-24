@@ -1,0 +1,49 @@
+package com.elseorand.game.mahjong.entity
+
+import com.elseorand.game.mahjong.logic.MahjongPai
+import com.elseorand.game.mahjong.logic._
+
+sealed trait GameBaEntity {
+  def omoteDora(): MahjongPai
+  def uraDora(): MahjongPai
+  def haiList(kaze: Kaze): Seq[MahjongPai]
+  def tsumoHai(number: Int): Seq[MahjongPai]
+}
+
+case class GameBa4Entity(id: String, allPaiList: Seq[MahjongPai], val playerTon: User, playerNan: User, playerSya: User, playerBei: User) extends GameBaEntity {
+
+  val OmoteKanDora: Seq[MahjongPai] = allPaiList.slice(0, 4)
+  val UraKanDora: Seq[MahjongPai] = allPaiList.slice(4, 8)
+  val RinsyanHai: Seq[MahjongPai] = allPaiList.slice(8, 12)
+  val Doras: Seq[MahjongPai] = allPaiList.slice(12, 14)
+
+  var TonPaiList = allPaiList.slice(14, 28)
+  var sortedTonPaiList = TonPaiList.sortBy(_.defaultSorting)
+  var NanPaiList = allPaiList.slice(28, 41)
+  var sortedNanPaiList = NanPaiList.sortBy(_.defaultSorting)
+  var SyaPaiList = allPaiList.slice(41, 54)
+  var sortedSyaPaiList = SyaPaiList.sortBy(_.defaultSorting)
+  var BeiPaiList = allPaiList.slice(54, 67)
+  var sortedBeiPaiList = BeiPaiList.sortBy(_.defaultSorting)
+  var PipaiList = allPaiList.drop(67)
+
+  def omoteDora(): MahjongPai = Doras(0)
+  def uraDora(): MahjongPai = Doras(1)
+  def haiList(kaze: Kaze): Seq[MahjongPai] = kaze.name match {
+    case "Ton" => TonPaiList
+    case "Nan" => NanPaiList
+    case "Sya" => SyaPaiList
+    case "Bei" => BeiPaiList
+    case _ => throw new Exception(s"no kaze: $kaze")
+  }
+
+  def tsumoHai(number: Int): Seq[MahjongPai] = {
+    val (tsumoHai, rest) =
+      if(PipaiList.length > number)
+        (PipaiList.take(number), PipaiList.drop(number))
+      else (PipaiList, Nil)
+    PipaiList = rest
+    tsumoHai
+  }
+
+}

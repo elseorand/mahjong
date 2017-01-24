@@ -62,11 +62,18 @@
     height: 56px;
     width: 46.5px;
 }
+.sutePaiListArea > .paiObject > .paiFront > span {
+    font-size: 3.9rem;
+    vertical-align:top;
+    position: relative;
+    top: -0.90rem;
+    left: -0.17rem;
+}
 
 .paiFront {
     z-index: 110;
     height: 80px;
-    width: 64px;
+    width: 62px;
     top: 7px;
     left: -1px;
     position: absolute;
@@ -80,7 +87,7 @@
 .paiBack {
     z-index: 110;
     height: 80px;
-    width: 64px;
+    width: 62px;
     top: 0px;
     left: 8px;
     position: absolute;
@@ -158,4 +165,20 @@
 }
 .charactorArea:nth-of-type(4){
     top:938px;
+}
+
+@font-face {
+    font-family: 'FreeSerif';
+    src: url('./jscss/FreeSerif.eot?#iefix') format('embedded-opentype'),  url('./jscss/FreeSerif.otf')  format('opentype'),
+	  url('./jscss/FreeSerif.woff') format('woff'), url('./jscss/FreeSerif.ttf')  format('truetype'), url('./jscss/FreeSerif.svg#FreeSerif') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+.paiFront > span {
+	  font-family: 'FreeSerif' !important;
+    font-size: 5.5rem;
+    vertical-align:top;
+    position: relative;
+    top: -1.3rem;
+    left: -0.3rem;
 }

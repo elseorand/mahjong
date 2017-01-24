@@ -8,10 +8,11 @@ $(function(){
   });;
 
   console.log('hostname : ' + JSON.stringify(hostname));
+  var userId = 'testUserId';
 
   var webConn = null;
   function init(){
-    webConn = new WebSocket('ws://' + hostname + ':18080/mahjong/ws');
+    webConn = new WebSocket('ws://' + hostname + ':18080/mahjong/ws?userId=' + userId);
     webConn.onopen = function(event) {
       console.log('onopen: ' + event.data);
     };
@@ -39,6 +40,26 @@ $(function(){
   }
   init();
 
+  function buildChatMessage(msg){
+    var rtn = {
+      "$type": "com.elseorand.game.mahjong.logic.GameMessage.ChatMessage",
+      "senderId": userId,
+      "message": msg
+    };
+
+    return rtn;
+  }
+
+  function buildRequestTsumohai(num){
+    var rtn = {
+      "$type": "com.elseorand.game.mahjong.logic.GameMessage.RequestTsumohai",
+      "senderId": userId,
+      "number": num
+    };
+
+    return rtn;
+  }
+
   var el = {};
   var els_element = $('.element').each(function(){
     var _this = $(this);
@@ -47,8 +68,8 @@ $(function(){
 
   el.test.on('click', function(){
     var _this = $(this);
-    console.log('click : ');
-    webConn.send('test');
+    var sendData = JSON.stringify(buildRequestTsumohai(1));
+    webConn.send(sendData);
   });
 
 

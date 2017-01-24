@@ -1,0 +1,5 @@
+package com.elseorand.game.mahjong.entity
+
+case class User(userId: String, name: String) {
+
+}

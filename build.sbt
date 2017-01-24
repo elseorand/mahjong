@@ -39,3 +39,4 @@ libraryDependencies += "com.typesafe.slick" % "slick_2.11" % "3.1.1"
 libraryDependencies += "com.typesafe.slick" % "slick-codegen_2.11" % "3.1.1"
 // https://mvnrepository.com/artifact/com.jsuereth/scala-arm_2.11
 libraryDependencies += "com.jsuereth" % "scala-arm_2.11" % "2.0"
+libraryDependencies += "io.spray" %%  "spray-json" % "1.3.3"
