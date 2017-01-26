@@ -62,7 +62,7 @@
     height: 56px;
     width: 46.5px;
 }
-.sutePaiListArea > .paiObject > .paiFront > span {
+.sutePaiListArea > .paiObject > .pai {
     font-size: 3.9rem;
     vertical-align:top;
     position: relative;
@@ -71,21 +71,21 @@
 }
 
 .paiFront {
-    z-index: 110;
+    z-index: 120;
     height: 80px;
     width: 62px;
     top: 7px;
     left: -1px;
     position: absolute;
     border-radius: 5px;
-    background-color: rgb(255, 255, 255);
+    background-color: transparent;
     border-color: rgb(200, 200, 200);
     border-top: 2px solid rgb(200, 200, 200);
     border-style: solid;
     display: block;
 }
 .paiBack {
-    z-index: 110;
+    z-index: 100;
     height: 80px;
     width: 62px;
     top: 0px;
@@ -174,11 +174,26 @@
     font-weight: normal;
     font-style: normal;
 }
-.paiFront > span {
+.pai {
+    z-index:110;
 	  font-family: 'FreeSerif' !important;
     font-size: 5.5rem;
     vertical-align:top;
     position: relative;
-    top: -1.3rem;
-    left: -0.3rem;
+    top: -0.7rem;
+    left: -0.1rem;
+    background-color:white;
+}
+
+.pai.Pinzu {
+    color: blue;
+}
+.pai.Manzu {
+    color: red;
+}
+.pai.Souzu {
+    color: green;
+}
+.pai.Jihai {
+    color: black;
 }

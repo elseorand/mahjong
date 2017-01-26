@@ -10,6 +10,7 @@ case class MahjongPai(
   val number: Int,
   val index: Int,
   val id: Int,
+  val unicode: Int,
   val yaochu: Boolean,
   val chuchan: Boolean,
   val routou: Boolean,
@@ -29,5 +30,5 @@ case class Kaze(name: String) extends KazeTrait
 
 object MahjongPaiJsonProtocol extends DefaultJsonProtocol {
   implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
-  implicit val mahjongPaiFormat = jsonFormat9(MahjongPai.apply)
+  implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
 }

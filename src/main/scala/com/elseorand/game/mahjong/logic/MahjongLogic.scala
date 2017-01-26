@@ -22,11 +22,15 @@ trait MahjongLogic {
 
   val PAI_TYPES9NUMBER = List(Manzu, Souzu, Pinzu)
   val ALL_PAI_LIST = PAI_TYPES9NUMBER.flatMap(payType =>
-    for(num <- 1 to 9; id <- 0 to 3) yield {
+    for(num <- 1 to 9; index <- 0 to 3) yield {
       val is1or9 = num == 1 || num == 9;
-      MahjongPai(payType, num, id, num + 9 * id, is1or9, !is1or9, is1or9, false, false)
-    }) ++ (for(num <- 1 to 7; id <- 0 to 3) yield {
-      MahjongPai(Jihai, num, id, num + 7 * id + 108, true, false, false, num <= 4, num > 4)
+      MahjongPai(payType, num, index, num + 9 * index
+        , 126982 + num + 9 * PAI_TYPES9NUMBER.indexOf(payType)
+        , is1or9, !is1or9, is1or9, false, false)
+    }) ++ (for(num <- 1 to 7; index <- 0 to 3) yield {
+      MahjongPai(Jihai, num, index, num + 7 * index + 108
+        , 126975 + num
+        , true, false, false, num <= 4, num > 4)
     })
 
   def getAllPaiList(): List[MahjongPai] = ALL_PAI_LIST
@@ -55,6 +59,7 @@ object MahjongLogic {
     val gameActor = system.actorOf(Props(new Actor {
       var subscribers = Set.empty[(String, ActorRef)] // TODO concurrent
 
+      // TODO agari, ryukyoku, taku end,
       def receive: Receive = {
         // TODO case NewTaku
         case NewParticipant(id, subscriber) => {
@@ -64,7 +69,7 @@ object MahjongLogic {
             dispatch(Protocol.ChatMessage(id, s"user: $id joins." ))
           }else{
             // TODO create taku ID
-            taku = Taku4(subscribers.toList.map(s => User(s._1, "hoge", s._2)))
+            taku = Taku4(subscribers.toList.map(s => User(s._1, "hoge", s._2)))// TODO hoge
             dispatch(Protocol.ChatMessage(id, s"user: $id joins. Game Start!!" ))
           }
         }
@@ -103,12 +108,16 @@ object MahjongLogic {
             val jsoned = msg.parseJson
 
             jsoned.convertTo[Protocol.DefaultType].$type match {
-              case "com.elseorand.game.mahjong.logic.GameMessage.RequestTsumohai" => {
+              case "RequestTsumohai" => {
+                Console println "route.RequestTsumohai : "
                 import com.elseorand.game.mahjong.logic.Protocol.RequestTsumohaiProtocol._
                 val reqTsumohai = jsoned.convertTo[Protocol.RequestTsumohai]
                 Tsumohai(senderId, getAllRandomedPaiList().slice(0, reqTsumohai.number))// TODO
               }
-              case _ => ReceivedMessage(senderId, msg) // => to receive method
+              case _ => {
+                Console println "route._ : " + jsoned.convertTo[Protocol.DefaultType].$type
+                ReceivedMessage(senderId, msg) // => to receive method
+              }
             }
           })
           .to(gameInSink(senderId))
