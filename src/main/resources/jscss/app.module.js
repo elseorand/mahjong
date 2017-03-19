@@ -16,18 +16,16 @@ $(function(){
       try {
         webConn = new WebSocket('ws://' + hostname + ':18080/mahjong/ws?userId=' + userId);
       } catch(e) {
+        console.log('e.message : ' + e.message);
         webConn = null;
       }
     }
-
-    webConn.onopen = function(event) {
-      console.log('onopen: ' + event.data);
+    webConn.onopen = function() {
+      console.log('onopen: ' + hostname);
     };
-
     webConn.onclose = function(event) {
       console.log('onclose');
     };
-
     webConn.onmessage = function(event) {
       if (event && event.data){
         console.log('onmessage: ' + event.data);
@@ -49,6 +47,7 @@ $(function(){
     };
 
     webConn.onerror = function(event) {
+      webConn = null;
       console.log('onerror');
       init();
     };
@@ -56,7 +55,6 @@ $(function(){
   init();
 
   var builders = {};
-
   builders.ChatMessage = function(msg){
     var rtn = {
       "$type": "ChatMessage",
@@ -82,7 +80,7 @@ $(function(){
   };
 
   builders.ResponseTsumohai = function(rawData){
-    console.log('rawData : ' + JSON.stringify(rawData));
+    console.log('rawData ResponseTsumohai : ' + JSON.stringify(rawData));
     rawData.paiList.forEach(function(pai){
         pai.unicode = '&#' + pai.unicode + ';';
     });
@@ -90,6 +88,7 @@ $(function(){
       rawData.paiList.forEach(function(pai){
       $('<div id="" class="element paiObject" >' +
         '<section id="" class="element paiBack" ></section>' +
+        '<section id="" class="element paiBody" ></section>' +
         '<span class="pai ' + pai.paiType.name + '">' + pai.unicode + '</span>' +
         '<section id="" class="element paiFront" >' +
         '</section>' +
@@ -110,6 +109,9 @@ $(function(){
     var _this = $(this);
     var sendData = JSON.stringify(builders.RequestTsumohai(1));
     try {
+      if (!webConn){
+        init();
+      }
       webConn.send(sendData);
     } catch(e) {
       console.log(e);

@@ -7,6 +7,7 @@ object Protocol {
 
   }
   case class DefaultType(val $type: String) extends GameMessage
+  case class NewParticipant(userId: String, kaze: Kaze)
   case class ChatMessage(senderId: String, message: String) extends GameMessage
   case class Subscribe(member: String, allMembers: Seq[String]) extends GameMessage
   case class UnSubscribe(member: String) extends GameMessage

@@ -14,13 +14,19 @@ import com.elseorand.game.mahjong.logic.Protocol.ResponseTsumohaiProtocol._
 import spray.json._
 
 class WebService(implicit fm: Materializer, system: ActorSystem) extends Directives {
+
   val mahjongLogic = MahjongLogic(system)
   // import system.dispatcher
 
   def route = get {
+    Console println s"pass : get"
+
     pathPrefix("mahjong") {
       pathSingleSlash {
         getFromResource("html/main.html")
+      } ~
+      pathPrefix("wysiwyg"){
+        getFromResourceDirectory("wysiwyg")
       } ~
       pathPrefix("jscss"){
         getFromResourceDirectory("jscss") // TODO search recursive
@@ -45,6 +51,10 @@ class WebService(implicit fm: Materializer, system: ActorSystem) extends Directi
   // TODO back pressure やるのでその内修正
   def wsFlow(senderId: String): Flow[Message, Message, _] =
     Flow[Message]
+      .map { msg => // for logging
+        Console println s"log msg : $msg"
+        msg
+      }
       .collect {
         case TextMessage.Strict(msg) => msg
       }

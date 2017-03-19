@@ -3,9 +3,28 @@ package com.elseorand.game.mahjong.logic
 import com.elseorand.game.mahjong.entity.User
 import com.elseorand.game.mahjong.entity.GameBaEntity
 
-sealed trait Taku
+import java.util.concurrent.ConcurrentMap
+import java.util.concurrent.ConcurrentHashMap
+import scala.collection.concurrent.Map
+import scala.collection.convert.decorateAsScala._
 
-case class Taku4(members: Seq[User]) extends Taku {
+sealed trait Taku {
+  def has(user: User): Boolean
+  def add(user: User): Option[Taku]
+}
+
+case class Taku4(val id: Long, itKaze: Iterator[Kaze]) extends Taku {
+  val concrrentMap: ConcurrentMap[User, Kaze] = new ConcurrentHashMap()
+  val members: Map[User, Kaze] = concrrentMap.asScala
+
+  def has(user: User) = members.contains(user)
+
+  def add(user: User) = {
+    if(itKaze.hasNext) {
+      concrrentMap.computeIfAbsent(user, u => itKaze.next)
+      Option(this)
+    } else None
+  }
 
 }
 

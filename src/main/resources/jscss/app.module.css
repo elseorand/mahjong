@@ -58,20 +58,21 @@
     width: 51.1px;
 }
 .sutePaiListArea > .paiObject > .paiFront,
+.sutePaiListArea > .paiObject > .paiBody,
 .sutePaiListArea > .paiObject > .paiBack {
     height: 56px;
     width: 46.5px;
 }
 .sutePaiListArea > .paiObject > .pai {
-    font-size: 3.9rem;
+    font-size: 4.0rem;
     vertical-align:top;
     position: relative;
-    top: -0.90rem;
-    left: -0.17rem;
+    top: -0.4rem;
+    left: 0rem;
 }
 
 .paiFront {
-    z-index: 120;
+    z-index: 115;
     height: 80px;
     width: 62px;
     top: 7px;
@@ -81,6 +82,29 @@
     background-color: transparent;
     border-color: rgb(200, 200, 200);
     border-top: 2px solid rgb(200, 200, 200);
+    border-style: solid;
+    display: block;
+}
+.pai {
+    z-index:110;
+	  font-family: 'FreeSerif' !important;
+    font-size: 5.5rem;
+    vertical-align:top;
+    position: relative;
+    top: -0.7rem;
+    left: -0.1rem;
+}
+
+.paiBody {
+    z-index: 105;
+    height: 78px;
+    width: 62px;
+    top: 7px;
+    left: -1px;
+    position: absolute;
+    border-radius: 5px;
+    background-color: white;
+    border-color: transparent;
     border-style: solid;
     display: block;
 }
@@ -173,16 +197,6 @@
 	  url('./jscss/FreeSerif.woff') format('woff'), url('./jscss/FreeSerif.ttf')  format('truetype'), url('./jscss/FreeSerif.svg#FreeSerif') format('svg');
     font-weight: normal;
     font-style: normal;
-}
-.pai {
-    z-index:110;
-	  font-family: 'FreeSerif' !important;
-    font-size: 5.5rem;
-    vertical-align:top;
-    position: relative;
-    top: -0.7rem;
-    left: -0.1rem;
-    background-color:white;
 }
 
 .pai.Pinzu {

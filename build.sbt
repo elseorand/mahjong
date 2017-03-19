@@ -1,5 +1,3 @@
-enablePlugins(ScalaJSPlugin)
-
 name := """mahjong"""
 
 version := "1.0"
