@@ -4,6 +4,8 @@ version := "1.0"
 
 scalaVersion := "2.12.1"
 
+scalacOptions := Seq("-unchecked", "-deprecation", "-feature")
+
 // Change this to another test framework if you prefer
 libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
 libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.16"

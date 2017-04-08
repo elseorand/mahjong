@@ -1,30 +1,45 @@
 package com.elseorand.game.mahjong.logic
 
 import com.elseorand.game.mahjong.entity.User
+import com.elseorand.game.mahjong.entity.UserId
 import com.elseorand.game.mahjong.entity.GameBaEntity
+import com.elseorand.game.mahjong.entity.GameBa4Entity
+import com.elseorand.game.mahjong.entity.GameId
 
+import java.util.concurrent.atomic.AtomicLong
 import java.util.concurrent.ConcurrentMap
 import java.util.concurrent.ConcurrentHashMap
 import scala.collection.concurrent.Map
 import scala.collection.convert.decorateAsScala._
 
 sealed trait Taku {
-  def has(user: User): Boolean
-  def add(user: User): Option[Taku]
+
+  def has(userId: UserId): Boolean
+  def newGame(newPaiList: () => Seq[MahjongPai]): GameBaEntity
+  def gameOf(gameId: GameId): GameBaEntity
 }
 
-case class Taku4(val id: Long, itKaze: Iterator[Kaze]) extends Taku {
-  val concrrentMap: ConcurrentMap[User, Kaze] = new ConcurrentHashMap()
-  val members: Map[User, Kaze] = concrrentMap.asScala
+case class Taku4(
+  val id: Long,
+  val gameCounter: AtomicLong,
+  val memberList: Seq[(UserId, User)],
+  val kazeList: Seq[Kaze],
+  val registerNewGame: (GameId, GameBaEntity) => Option[GameBaEntity]) extends Taku {
+  import scala.collection.mutable.ListBuffer
 
-  def has(user: User) = members.contains(user)
+  val memberIdList = memberList map( _._1)
+  val gameList: ListBuffer[(GameId, GameBaEntity)] = new ListBuffer
 
-  def add(user: User) = {
-    if(itKaze.hasNext) {
-      concrrentMap.computeIfAbsent(user, u => itKaze.next)
-      Option(this)
-    } else None
+  def has(userId: UserId) = memberIdList contains userId
+
+  def newGame(newPaiList: () => Seq[MahjongPai]): GameBa4Entity = {
+    val newGameId = GameId(gameCounter.incrementAndGet());
+    val newGameBa = GameBa4Entity(newGameId, newPaiList(), memberList.map(_._2).zip(kazeList))
+    gameList += ((newGameId, newGameBa))
+    newGameBa
   }
+
+  def gameOf(gameId: GameId): GameBaEntity = ???
 
 }
 

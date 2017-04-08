@@ -6,22 +6,16 @@ import akka.actor._
 import akka.stream.OverflowStrategy
 import akka.stream.scaladsl._
 
+import com.elseorand.game.mahjong.entity.GameId
+import com.elseorand.game.mahjong.entity.GameBaEntity
 import com.elseorand.game.mahjong.entity.User
+import com.elseorand.game.mahjong.entity.UserId
 
-trait MahjongLogic {
+trait MahjongService {
 
   val random = new Random
-  val Manzu = PaiType("Manzu")
-  val Souzu = PaiType("Souzu")
-  val Pinzu = PaiType("Pinzu")
-  val Jihai = PaiType("Jihai")
 
-  val Ton = Kaze("Ton")
-  val Nan = Kaze("Nan")
-  val Sya = Kaze("Sya")
-  val Bei = Kaze("Bei")
-
-  val PAI_TYPES9NUMBER = List(Manzu, Souzu, Pinzu)
+  val PAI_TYPES9NUMBER = List(MahjongService.Manzu, MahjongService.Souzu, MahjongService.Pinzu)
   val ALL_PAI_LIST = PAI_TYPES9NUMBER.flatMap(payType =>
     for(num <- 1 to 9; index <- 0 to 3) yield {
       val is1or9 = num == 1 || num == 9;
@@ -29,13 +23,13 @@ trait MahjongLogic {
         , 126982 + num + 9 * PAI_TYPES9NUMBER.indexOf(payType)// 126982 is unicode
         , is1or9, !is1or9, is1or9, false, false)
     }) ++ (for(num <- 1 to 7; index <- 0 to 3) yield {
-      MahjongPai(Jihai, num, index, num + 7 * index + 108
+      MahjongPai(MahjongService.Jihai, num, index, num + 7 * index + 108
         , 126975 + num
         , true, false, false, num <= 4, num > 4)
     })
 
-  def getAllPaiList(): List[MahjongPai] = ALL_PAI_LIST
-  def getAllRandomedPaiList(): List[MahjongPai] = {
+  def allPaiList(): List[MahjongPai] = ALL_PAI_LIST
+  def allRandomedPaiList(): List[MahjongPai] = {
     val arrayed = ALL_PAI_LIST.toArray
     for(i <- 0 to ALL_PAI_LIST.length - 1) {
       val toIndex = random.nextInt(ALL_PAI_LIST.length)
@@ -52,21 +46,35 @@ trait MahjongLogic {
 
 }
 
-object MahjongLogic {
+object MahjongService {
   import java.util.concurrent.atomic.AtomicLong
+
   import java.util.concurrent.ConcurrentHashMap
+  import scala.collection.JavaConverters._
   import scala.collection.concurrent.Map
-  import scala.collection.convert.decorateAsScala._
 
-  val subscribers: Map[String, User] = new ConcurrentHashMap().asScala
-  val kazeList: Seq[Kaze] = Seq(MahjongLogic.Ton, MahjongLogic.Nan, MahjongLogic.Sya, MahjongLogic.Bei)
+  val Manzu = PaiType("Manzu")
+  val Souzu = PaiType("Souzu")
+  val Pinzu = PaiType("Pinzu")
+  val Jihai = PaiType("Jihai")
 
+  val Ton = Kaze("Ton")
+  val Nan = Kaze("Nan")
+  val Sya = Kaze("Sya")
+  val Bei = Kaze("Bei")
+
+  val subscribers: Map[UserId, User] = new ConcurrentHashMap().asScala
+  val kazeList: Seq[Kaze] = Seq(MahjongService.Ton, MahjongService.Nan, MahjongService.Sya, MahjongService.Bei)
 
   var system: ActorSystem = null
-  var takuId: AtomicLong = new AtomicLong()
+  val newTakuId: AtomicLong = new AtomicLong
+  val gameCounter: AtomicLong = new AtomicLong
+  val gameRepository: Map[GameId, GameBaEntity] = new ConcurrentHashMap().asScala
+
   // TODO 一次受付 palyers pool
   // TODO taku pool
-  var taku: Taku = null // 個人用のため１卓のみ
+  var taku: Taku = null // 小規模のため１卓のみ
+  // TODO taku manager
   var gameActor: ActorRef = null // TODO gameActorは卓毎
 
   def refreshGameActor(): Unit = gameActor = genGameActor()
@@ -78,19 +86,25 @@ object MahjongLogic {
         // TODO case NewTaku
         case NewParticipant(id, subscriber) => {
           context.watch(subscriber) // TODO what does this mean
-          subscribers += (id -> User(id, "hoge", subscriber))
-          if (subscribers.size < 1){// TODO 1
+          subscribers += (UserId(id) -> User(UserId(id), "hoge", subscriber))  // TODO using user_master
+          if (subscribers.size < 1){// TODO magic 1 => 4
             dispatch(Protocol.ChatMessage(id, s"user: $id joins." ))
           }else{
-            // TODO create taku ID
-            taku = Taku4(takuId.incrementAndGet(), kazeList)// TODO user name
+            var memberList: Seq[(UserId, User)] = Nil
+            synchronized {
+              val pair = subscribers.toSeq.splitAt(4)
+              memberList = pair._1
+              subscribers --= pair._2.map(_._1)
+            }
+            taku = Taku4(newTakuId.incrementAndGet(), gameCounter, memberList, kazeList, (id, entity) => gameRepository.putIfAbsent(id, entity))// TODO async
             dispatch(Protocol.ChatMessage(id, s"user: $id joins. Game Start!!" ))
           }
         }
-        case msg: ReceivedMessage => {
+        case msg: ReceivedMessage => { // TODO rm this
           Console println s"ReceivedMessage : ${msg.message}"
           dispatch(msg.toChatMessage)
         }
+        // mahjong actions
         case Tsumohai(senderId, paiList) => dispatch(Protocol.ResponseTsumohai(senderId, paiList))
         case Sutehai(senderId, paiList) => dispatch(Protocol.ResponseSutehai(senderId, paiList))
         case Pon(senderId, pai) => dispatch(Protocol.ResponsePon(senderId, pai))
@@ -101,20 +115,26 @@ object MahjongLogic {
         case Tsumo(senderId, pai) => dispatch(Protocol.ResponseTsumo(senderId, pai))
         case Syn(senderId, eventSeq) => dispatch(Protocol.Syn(senderId, eventSeq)) // TODO taku
         case Ack(senderId, eventSeq) => dispatch(Protocol.Ack(senderId, eventSeq)) // TODO taku
-
       }
 
       def dispatch(msg: Protocol.GameMessage): Unit = subscribers.foreach(_._2.actor ! msg)
       def members = subscribers.map(_._1).toSeq
     }))
 
-  def apply(system: ActorSystem): MahjongLogic = {
+  def takuOfUserPlaying(userId: UserId): Taku = ???
+
+  def gameOfUserPlaying(userId: UserId): GameBaEntity = {
+    val taku = takuOfUserPlaying(userId);
+    ???
+  }
+
+  def apply(system: ActorSystem): MahjongService = {
     this.system = system
-    gameActor = genGameActor()
+    this.gameActor = genGameActor()
 
     def gameInSink(senderId: String) = Sink.actorRef[GameEvent](gameActor, LeaveParticipant(senderId))
 
-    new MahjongLogic {
+    new MahjongService {
       import spray.json._
 
       def gameFlow(senderId: String): Flow[String, Protocol.GameMessage, Any] = {
@@ -126,15 +146,17 @@ object MahjongLogic {
             // TODO observing how to dispatch
             val jsoned = msg.parseJson
             Console println s"in msg : $msg"
-            jsoned.convertTo[Protocol.DefaultType].$type match {
+            val protocolType = jsoned.convertTo[Protocol.DefaultType].$type;
+            protocolType match {
               case "RequestTsumohai" => {
-                Console println "route.RequestTsumohai : "
+                Console println "route : RequestTsumohai"
                 import com.elseorand.game.mahjong.logic.Protocol.RequestTsumohaiProtocol._
                 val reqTsumohai = jsoned.convertTo[Protocol.RequestTsumohai]
-                Tsumohai(senderId, getAllRandomedPaiList().slice(0, reqTsumohai.number))// TODO
+                Tsumohai(senderId, allRandomedPaiList().slice(0, reqTsumohai.number))// TODO
               }
+              // TODO dev other actions
               case _ => {
-                Console println "route._ : " + jsoned.convertTo[Protocol.DefaultType].$type
+                Console println s"route : $protocolType"
                 ReceivedMessage(senderId, msg) // => to receive method
               }
             }

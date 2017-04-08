@@ -9,7 +9,7 @@ sealed trait GameBaEntity {
   def tsumoHai(number: Int): Seq[MahjongPai]
 }
 
-case class GameBa4Entity(id: String, allPaiList: Seq[MahjongPai], val playerTon: User, playerNan: User, playerSya: User, playerBei: User) extends GameBaEntity {
+case class GameBa4Entity(id: GameId, allPaiList: Seq[MahjongPai], val players: Seq[(User, Kaze)]) extends GameBaEntity {
 
   val OmoteKanDora: Seq[MahjongPai] = allPaiList.slice(0, 4)
   val UraKanDora: Seq[MahjongPai] = allPaiList.slice(4, 8)

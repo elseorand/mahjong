@@ -1,4 +1,4 @@
-package com.elseorand.game.mahjong.service
+package com.elseorand.game.mahjong.interface
 
 import akka.actor._
 import akka.stream._
@@ -13,9 +13,9 @@ import com.elseorand.game.mahjong.logic.Protocol.ResponseTsumohaiProtocol._
 
 import spray.json._
 
-class WebService(implicit fm: Materializer, system: ActorSystem) extends Directives {
+class WebInterface(implicit fm: Materializer, system: ActorSystem) extends Directives {
 
-  val mahjongLogic = MahjongLogic(system)
+  val service = MahjongService(system)
   // import system.dispatcher
 
   def route = get {
@@ -25,7 +25,7 @@ class WebService(implicit fm: Materializer, system: ActorSystem) extends Directi
       pathSingleSlash {
         getFromResource("html/main.html")
       } ~
-      pathPrefix("wysiwyg"){
+      pathPrefix("wysiwyg"){ // TODO for DEV
         getFromResourceDirectory("wysiwyg")
       } ~
       pathPrefix("jscss"){
@@ -58,15 +58,16 @@ class WebService(implicit fm: Materializer, system: ActorSystem) extends Directi
       .collect {
         case TextMessage.Strict(msg) => msg
       }
-      .via(mahjongLogic.gameFlow(senderId))
+      .via(service.gameFlow(senderId))
       .map {
-      case msg: Protocol.ResponseTsumohai => {
-        val json: JsValue = msg.toJson
-        TextMessage(Source.single(json.toString()))
+        // TODO DEV other actions
+        case msg: Protocol.ResponseTsumohai => {
+          val json: JsValue = msg.toJson
+          TextMessage(Source.single(json.toString()))
+        }
+        case msg: Protocol.GameMessage =>
+          TextMessage(Source.single("OK: " + msg))
       }
-      case msg: Protocol.GameMessage =>
-        TextMessage(Source.single("OK: " + msg))
-  }
   // .via(reportErrorsFlow)
 
   // def reportErrorsFlow[T]: Flow[T, T, Any] = Flow[T]

@@ -1,0 +1,28 @@
+#+OPTIONS: ^:{}
+#+AUTHOR:elseorand
+#+TITLE:Mahjong Design
+
+* Structure
+** WebService
+	websocket interface controller ?
+*** MahjongLogic
+**** Waitting room
+**** Taku room
+***** Taku
+			+ members
+			+ states
+****** GameBaEntity
+			+ paiList
+			+ dora ... etc
+
+* Flow
+	+ Server starts
+	+ Server waits Users
+	+ NewPaticient
+	+ add user
+	+ new taku
+	+ taku send game starting to users
+	+ users confirm
+	+ taku starts new game
+	+ taku sents pais to users
+	+ taku waits for sending a sutehai
