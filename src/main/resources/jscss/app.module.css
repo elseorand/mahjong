@@ -67,8 +67,12 @@
     font-size: 4.0rem;
     vertical-align:top;
     position: relative;
-    top: -0.4rem;
+    top: -0.2rem;
     left: 0rem;
+}
+
+.sutePaiListArea > .paiObject > .paiFront {
+    border: 1px solid rgb(200, 200, 200);
 }
 
 .paiFront {
@@ -87,11 +91,11 @@
 }
 .pai {
     z-index:110;
-	  font-family: 'FreeSerif' !important;
+	  font-family: FreeSerif !important;
     font-size: 5.5rem;
     vertical-align:top;
     position: relative;
-    top: -0.7rem;
+    top: -0.4rem;
     left: -0.1rem;
 }
 
@@ -193,8 +197,8 @@
 
 @font-face {
     font-family: 'FreeSerif';
-    src: url('./jscss/FreeSerif.eot?#iefix') format('embedded-opentype'),  url('./jscss/FreeSerif.otf')  format('opentype'),
-	  url('./jscss/FreeSerif.woff') format('woff'), url('./jscss/FreeSerif.ttf')  format('truetype'), url('./jscss/FreeSerif.svg#FreeSerif') format('svg');
+    src: url('FreeSerif.eot?#iefix') format('embedded-opentype'),  url('FreeSerif.otf')  format('opentype'),
+	  url('FreeSerif.woff') format('woff'), url('FreeSerif.ttf')  format('truetype'), url('FreeSerif.svg#FreeSerif') format('svg');
     font-weight: normal;
     font-style: normal;
 }

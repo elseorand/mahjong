@@ -9,7 +9,7 @@ import akka.http.scaladsl.model.ws.{Message, TextMessage}
 import com.elseorand.game.mahjong.logic._
 import com.elseorand.game.mahjong.logic.Protocol
 import com.elseorand.game.mahjong.logic.Protocol._
-import com.elseorand.game.mahjong.logic.Protocol.ResponseTsumohaiProtocol._
+import com.elseorand.game.mahjong.logic.Protocol.YouHaveTsumohaiProtocol._
 
 import spray.json._
 
@@ -19,8 +19,6 @@ class WebInterface(implicit fm: Materializer, system: ActorSystem) extends Direc
   // import system.dispatcher
 
   def route = get {
-    Console println s"pass : get"
-
     pathPrefix("mahjong") {
       pathSingleSlash {
         getFromResource("html/main.html")
@@ -37,8 +35,6 @@ class WebInterface(implicit fm: Materializer, system: ActorSystem) extends Direc
     }
   } ~
   pathPrefix("mahjong" / "ws") {
-    Console println s"pass : ws"
-
     // val uuid = UUID.randomUUID().toString
     // TODO 誰が捨てたかが、必須のため、受領を意味するHttpレスポンスも返す
     parameter('userId) { userId =>
@@ -61,7 +57,9 @@ class WebInterface(implicit fm: Materializer, system: ActorSystem) extends Direc
       .via(service.gameFlow(senderId))
       .map {
         // TODO DEV other actions
-        case msg: Protocol.ResponseTsumohai => {
+        case msg: Protocol.YouHaveTsumohai => {
+          Console println ("msg.type " + msg.$type)
+          Console println s"msg.paiList : $msg.paiList"
           val json: JsValue = msg.toJson
           TextMessage(Source.single(json.toString()))
         }

@@ -12,11 +12,11 @@ object Protocol {
   case class Subscribe(member: String, allMembers: Seq[String]) extends GameMessage
   case class UnSubscribe(member: String) extends GameMessage
 
-  case class RequestTsumohai(senderId: String, number: Int) extends GameMessage
-  case class ResponseTsumohai(senderId: String, paiList: Seq[MahjongPai], val $type: String = "ResponseTsumohai") extends GameMessage
+  case class IhaveTsumohai(senderId: String, number: Int) extends GameMessage
+  case class YouHaveTsumohai(paiList: Seq[MahjongPai], val $type: String = "YouHaveTsumohai") extends GameMessage
 
-  case class RequestSutehai(senderId: String, paiList: Seq[MahjongPai]) extends GameMessage
-  case class ResponseSutehai(senderId: String, paiList: Seq[MahjongPai]) extends GameMessage
+  case class IhaveSutehai(senderId: String, paiList: Seq[MahjongPai]) extends GameMessage
+  case class YouHaveSutehai(senderId: String, paiList: Seq[MahjongPai]) extends GameMessage
 
   case class RequestPon(senderId: String, pai: MahjongPai) extends GameMessage
   case class ResponsePon(senderId: String, pai: MahjongPai) extends GameMessage
@@ -43,26 +43,26 @@ object Protocol {
     implicit val format = jsonFormat1(DefaultType.apply)
   }
 
-  object RequestTsumohaiProtocol extends DefaultJsonProtocol {
-    implicit val format = jsonFormat2(RequestTsumohai.apply)
+  object IhaveTsumohaiProtocol extends DefaultJsonProtocol {
+    implicit val format = jsonFormat2(IhaveTsumohai.apply)
   }
 
-  object ResponseTsumohaiProtocol extends DefaultJsonProtocol {
+  object YouHaveTsumohaiProtocol extends DefaultJsonProtocol {
     implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
-    implicit val format = jsonFormat3(ResponseTsumohai.apply)
+    implicit val format = jsonFormat2(YouHaveTsumohai.apply)
   }
 
-  object RequestSutehaiProtocol extends DefaultJsonProtocol {
+  object IhaveSutehaiProtocol extends DefaultJsonProtocol {
     implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
-    implicit val format = jsonFormat2(ResponseSutehai.apply)
+    implicit val format = jsonFormat2(YouHaveSutehai.apply)
   }
 
-  object ResponseSutehaiProtocol extends DefaultJsonProtocol {
+  object YouHaveSutehaiProtocol extends DefaultJsonProtocol {
     implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
-    implicit val format = jsonFormat2(ResponseSutehai.apply)
+    implicit val format = jsonFormat2(YouHaveSutehai.apply)
   }
 
   object RequestPonProtocol extends DefaultJsonProtocol {

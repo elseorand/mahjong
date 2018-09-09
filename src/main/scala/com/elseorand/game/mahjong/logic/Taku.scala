@@ -1,6 +1,6 @@
 package com.elseorand.game.mahjong.logic
 
-import com.elseorand.game.mahjong.entity.User
+import com.elseorand.game.mahjong.entity.{ Receiver, User }
 import com.elseorand.game.mahjong.entity.UserId
 import com.elseorand.game.mahjong.entity.GameBaEntity
 import com.elseorand.game.mahjong.entity.GameBa4Entity
@@ -15,31 +15,41 @@ import scala.collection.convert.decorateAsScala._
 sealed trait Taku {
 
   def has(userId: UserId): Boolean
-  def newGame(newPaiList: () => Seq[MahjongPai]): GameBaEntity
-  def gameOf(gameId: GameId): GameBaEntity
+  def newGame(newPaiList: () => Seq[MahjongPai]): Option[GameBaEntity]
+  def gameOf(gameId: GameId): Option[GameBaEntity]
+  def members(): Seq[(UserId, Receiver)]
 }
 
 case class Taku4(
   val id: Long,
   val gameCounter: AtomicLong,
-  val memberList: Seq[(UserId, User)],
+  val memberList: Seq[(UserId, Receiver)],
   val kazeList: Seq[Kaze],
   val registerNewGame: (GameId, GameBaEntity) => Option[GameBaEntity]) extends Taku {
   import scala.collection.mutable.ListBuffer
+
+  @volatile
+  var nowGame: Option[GameBaEntity] = Option.empty;
 
   val memberIdList = memberList map( _._1)
   val gameList: ListBuffer[(GameId, GameBaEntity)] = new ListBuffer
 
   def has(userId: UserId) = memberIdList contains userId
 
-  def newGame(newPaiList: () => Seq[MahjongPai]): GameBa4Entity = {
+  def newGame(newPaiList: () => Seq[MahjongPai]): Option[GameBaEntity] = {
     val newGameId = GameId(gameCounter.incrementAndGet());
     val newGameBa = GameBa4Entity(newGameId, newPaiList(), memberList.map(_._2).zip(kazeList))
     gameList += ((newGameId, newGameBa))
-    newGameBa
+    synchronized {
+      nowGame = Option(newGameBa)
+    }
+    nowGame
   }
 
-  def gameOf(gameId: GameId): GameBaEntity = ???
+  def gameOf(gameId: GameId): Option[GameBaEntity] = gameList
+    .filter(_._1 == gameId).map(_._2).headOption
+
+  def members(): Seq[(UserId, Receiver)] = memberList
 
 }
 

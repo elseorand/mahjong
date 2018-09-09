@@ -1,44 +1,36 @@
-name := """mahjong"""
+val scalaV = "2.12.6"
 
-version := "1.0"
+lazy val commonSettings = Seq(
+  organization := "com.elseorand",
+  scalaVersion := scalaV,
+  version := "0.1.0-SNAPSHOT",
+  scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
+)
 
-scalaVersion := "2.12.1"
+lazy val root = (project in file("."))
+//  .aggregate(api, client)
+  .settings(
+    name := "mahjong",
+    libraryDependencies := myLibraryDependencies,
+    commonSettings
+  )
 
-scalacOptions := Seq("-unchecked", "-deprecation", "-feature")
+val myLibraryDependencies = {
+  val akkaV       = "2.5.15"
+  val akkaHttpV   = "10.1.4"
+  val scalaTestV = "3.0.5"
+  val slickV = "3.2.3"
+  val logV = "1.2.3"
+  val scalaLogV = "3.9.0"
 
-// Change this to another test framework if you prefer
-libraryDependencies += "org.scalatest" %% "scalatest" % "2.2.4" % "test"
-libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-agent" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-camel" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-cluster" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-cluster-metrics" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-cluster-sharding" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-cluster-tools" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-contrib" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-multi-node-testkit" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-osgi" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-persistence" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-persistence-tck" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-remote" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-slf4j" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-stream" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-stream-testkit" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-testkit" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-distributed-data-experimental" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-typed-experimental" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-persistence-query-experimental" % "2.4.16"
-libraryDependencies += "com.typesafe.akka" %% "akka-http-core" % "10.0.1"
-libraryDependencies += "com.typesafe.akka" %% "akka-http" % "10.0.1"
-libraryDependencies += "com.typesafe.akka" %% "akka-http-testkit" % "10.0.1"
-libraryDependencies += "com.typesafe.akka" %% "akka-http-spray-json" % "10.0.1"
-libraryDependencies += "com.typesafe.akka" %% "akka-http-jackson" % "10.0.1"
-libraryDependencies += "com.typesafe.akka" %% "akka-http-xml" % "10.0.1"
-// https://mvnrepository.com/artifact/com.h2database/h2
-libraryDependencies += "com.h2database" % "h2" % "1.4.193"
-// https://mvnrepository.com/artifact/com.typesafe.slick/slick_2.11
-libraryDependencies += "com.typesafe.slick" % "slick_2.11" % "3.1.1"
-libraryDependencies += "com.typesafe.slick" % "slick-codegen_2.11" % "3.1.1"
-// https://mvnrepository.com/artifact/com.jsuereth/scala-arm_2.11
-libraryDependencies += "com.jsuereth" % "scala-arm_2.11" % "2.0"
-libraryDependencies += "io.spray" %%  "spray-json" % "1.3.3"
+  Seq(
+    "com.typesafe.akka" %% "akka-stream" % akkaV,
+    "com.typesafe.akka" %% "akka-http-core" % akkaHttpV,
+    "com.typesafe.akka" %% "akka-http" % akkaHttpV,
+    "com.typesafe.akka" %% "akka-http-spray-json" % akkaHttpV,
+    "com.typesafe.akka" %% "akka-http-jackson" % akkaHttpV,
+    "com.h2database" % "h2" % "1.4.197",
+    "ch.qos.logback" % "logback-classic" % logV,
+    "com.typesafe.scala-logging" %% "scala-logging" % scalaLogV
+  )
+}

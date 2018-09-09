@@ -4,14 +4,20 @@ $(function(){
   var protocol = rawProtocol.substr( 0 , (rawProtocol.length-1) ) ;
   var hostname = window.location.hostname ;
   Object.keys(window.location).forEach(function(x,i,a){
+  });
 
-  });;
+  var el = {};
+  el.login = $('#login')
+  .on('click', function(){
+    var _this = $(this);
+    init(el.userId.val());
+  });
+  el.userId = $('#userId');
 
   console.log('hostname : ' + JSON.stringify(hostname));
-  var userId = 'testUserId';
 
   var webConn = null;
-  function init(){
+  function init(userId){
     while(webConn === null) {
       try {
         webConn = new WebSocket('ws://' + hostname + ':18080/mahjong/ws?userId=' + userId);
@@ -52,7 +58,7 @@ $(function(){
       init();
     };
   }
-  init();
+
 
   var builders = {};
   builders.ChatMessage = function(msg){
@@ -67,9 +73,9 @@ $(function(){
     return rtn;
   };
 
-  builders.RequestTsumohai = function(num){
+  builders.IhaveTsumohai = function(num){Ｏ
     var rtn = {
-      "$type": "RequestTsumohai",
+      "$type": "IhaveTsumohai",
       "senderId": userId,
       "number": num
     };
@@ -79,8 +85,8 @@ $(function(){
     return rtn;
   };
 
-  builders.ResponseTsumohai = function(rawData){
-    console.log('rawData ResponseTsumohai : ' + JSON.stringify(rawData));
+  builders.YouHaveTsumohai = function(rawData){
+    console.log('rawData YouHaveTsumohai : ' + JSON.stringify(rawData));
     rawData.paiList.forEach(function(pai){
         pai.unicode = '&#' + pai.unicode + ';';
     });
@@ -107,7 +113,7 @@ $(function(){
 
   el.test.on('click', function(){
     var _this = $(this);
-    var sendData = JSON.stringify(builders.RequestTsumohai(1));
+    var sendData = JSON.stringify(builders.IhaveTsumohai(1));
     try {
       if (!webConn){
         init();
