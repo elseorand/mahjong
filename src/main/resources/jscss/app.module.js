@@ -92,13 +92,16 @@ $(function(){
     });
     rawData.run = function(){
       rawData.paiList.forEach(function(pai){
-      $('<div id="" class="element paiObject" >' +
-        '<section id="" class="element paiBack" ></section>' +
-        '<section id="" class="element paiBody" ></section>' +
-        '<span class="pai ' + pai.paiType.name + '">' + pai.unicode + '</span>' +
-        '<section id="" class="element paiFront" >' +
-        '</section>' +
-        '</div>').appendTo(el.holdingPaiListArea0);
+        $('<div id="pai_id_' + pai.id + '" class="element paiObject" ' +
+          ' data-pai-id="' + pai.id +
+          '" data-pai-number="' + pai.number +
+          '" data-pai-type="' + pai.paiType.name +
+          '">' +
+          '  <section id="" class="element paiBack" ></section>' +
+          '  <section id="" class="element paiBody" ></section>' +
+          '  <span class="pai ' + pai.paiType.name + '">' + pai.unicode + '</span>' +
+          '  <section id="" class="element paiFront" ></section>' +
+          '</div>').appendTo(el.holdingPaiListArea0);
       });
 
     };

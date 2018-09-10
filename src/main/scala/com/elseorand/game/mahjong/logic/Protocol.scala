@@ -48,91 +48,91 @@ object Protocol {
   }
 
   object YouHaveTsumohaiProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(YouHaveTsumohai.apply)
   }
 
   object IhaveSutehaiProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(YouHaveSutehai.apply)
   }
 
   object YouHaveSutehaiProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(YouHaveSutehai.apply)
   }
 
   object RequestPonProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponsePon.apply)
   }
 
   object ResponsePonProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponsePon.apply)
   }
 
   object RequestKanProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseKan.apply)
   }
 
   object ResponseKanProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseKan.apply)
   }
 
   object RequestChiProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseChi.apply)
   }
 
   object ResponseChiProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseChi.apply)
   }
 
   object RequestReachProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseReach.apply)
   }
 
   object ResponseReachProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseReach.apply)
   }
 
   object RequestRonProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseRon.apply)
   }
 
   object ResponseRonProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseRon.apply)
   }
 
   object RequestTsumoProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseTsumo.apply)
   }
 
   object ResponseTsumoProtocol extends DefaultJsonProtocol {
-    implicit val paiTypeFormat = jsonFormat1(PaiType.apply)
+    implicit val paiTypeFormat = PaiTypeFormat
     implicit val mahjongPaiFormat = jsonFormat10(MahjongPai.apply)
     implicit val format = jsonFormat2(ResponseTsumo.apply)
   }

@@ -56,8 +56,13 @@ case class GameBa4Entity(id: GameId, allPaiList: Seq[MahjongPai], val players: S
   }
 
   def start(): Unit = {
-    Console println "start"
-    players.foreach(playerKaze => playerKaze._1 ! Protocol.YouHaveTsumohai(tsumoHai(13, true)))
+    players.foreach(playerKaze => {
+      playerKaze._2 match {
+        case Ton => playerKaze._1 ! Protocol.YouHaveTsumohai(tsumoHai(14, true))
+        case _ => playerKaze._1 ! Protocol.YouHaveTsumohai(tsumoHai(13, true))
+      }
+
+    })
   }
 
 }

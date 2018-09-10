@@ -58,8 +58,6 @@ class WebInterface(implicit fm: Materializer, system: ActorSystem) extends Direc
       .map {
         // TODO DEV other actions
         case msg: Protocol.YouHaveTsumohai => {
-          Console println ("msg.type " + msg.$type)
-          Console println s"msg.paiList : $msg.paiList"
           val json: JsValue = msg.toJson
           TextMessage(Source.single(json.toString()))
         }
